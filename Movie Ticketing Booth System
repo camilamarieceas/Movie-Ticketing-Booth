@@ -1,266 +1,275 @@
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-struct UserData {
-    string username;
-    string password;
-};
+string selectedMovie;  // Variable to store the user's selected movie
+int selectedSeat;      // Variable to store the user's selected seat
+int numberOfTickets;   // Variable to store the number of tickets booked
+double totalCost;      // Variable to store the total cost of the booking
 
-UserData currentUser;
-bool isLoggedIn = false;
-string selectedMovieName = "";
-string selectedSeatName = "";
-string paymentMethodName = "";
+// Function to handle movie selection
+void selectMovie() {
+    int movieSelection;
+    cout << "************************************************************************\n";
+    cout << "\t\t\t   LIST OF MOVIES\n";
+    cout << "************************************************************************\n";
+    cout << "[1] - Movie 1 - 300 pesos\n";
+    cout << "[2] - Movie 2 - 300 pesos\n";
+    cout << "[3] - Movie 3 - 300 pesos\n";
+    cout << "[4] - Movie 4 - 300 pesos\n";
+    cout << "[5] - Movie 5 - 300 pesos\n";
+    cout << "Enter your choice (enter 0 to go back to the main menu): ";
+    cin >> movieSelection;
 
-void clearConsole();
-void registerUser();
-void loginUser();
-void selectMovie();
-void selectSeat();
-void selectPaymentMethod();
-void viewHistory();
-void logout();
-void displayMainMenu();
-void displayUserMenu();
-void resetUserSession();
+    switch (movieSelection) {
+    case 1:
+        selectedMovie = "Movie 1";
+        cout << "You selected " << selectedMovie << ". Price: 300 pesos.\n";
+        break;
+
+    case 2:
+        selectedMovie = "Movie 2";
+        cout << "You selected " << selectedMovie << ". Price: 300 pesos.\n";
+        break;
+
+    case 3:
+        selectedMovie = "Movie 3";
+        cout << "You selected " << selectedMovie << ". Price: 300 pesos.\n";
+        break;
+
+    case 4:
+        selectedMovie = "Movie 4";
+        cout << "You selected " << selectedMovie << ". Price: 300 pesos.\n";
+        break;
+
+    case 5:
+        selectedMovie = "Movie 5";
+        cout << "You selected " << selectedMovie << ". Price: 300 pesos.\n";
+        break;
+
+    case 0:
+        break;  // User wants to go back to the main menu
+
+    default:
+        cout << "Invalid choice. Please try again.\n";
+    }
+}
+
+// Function to handle seat selection
+void selectSeat() {
+    cout << "************************************************************************\n";
+    cout << "\t\t\t     SEAT SELECTION\n";
+    cout << "************************************************************************\n";
+    cout << "Seat Layout:\n\n";
+    cout << "       1       2       3       4       5       6       \n\n";
+    cout << "       7       8       9       10      11      12      \n";
+    cout << "Select a seat from 1 - 12 (enter 0 to go back to the main menu): ";
+    cin >> selectedSeat;
+
+    if (selectedSeat < 0 || selectedSeat > 12) {
+        cout << "Invalid seat selection. Please try again.\n";
+        selectedSeat = -1;  // Reset selectedSeat to an invalid value
+    }
+    else if (selectedSeat == 0) {
+        // User wants to go back to the main menu
+        selectedSeat = -1;  // Reset selectedSeat to an invalid value
+    }
+    else {
+        cout << "You selected seat " << selectedSeat << ".\n";
+    }
+}
+
+// Function to handle ticket booking
+void bookTicket() {
+    cout << "************************************************************************\n";
+    cout << "\t\t\t     PAYMENT METHOD\n";
+    cout << "************************************************************************\n"; 
+    cout << "Number of tickets: ";
+    cin >> numberOfTickets;
+
+    // Ensure the number of tickets is valid
+    while (numberOfTickets <= 0) {
+        cout << "Invalid number of tickets. Please enter a positive number.\n";
+        cout << "Number of tickets: ";
+        cin >> numberOfTickets;
+    }
+
+    // Calculate total cost
+    totalCost = numberOfTickets * 300; // Assuming a fixed price of 300 pesos per ticket
+
+    cout << "Movie: " << selectedMovie << "\n";
+    cout << "Seat number: " << selectedSeat << "\n";
+    cout << "Total cost: " << totalCost << " pesos\n";
+
+    // Select payment method
+    int paymentMethod;
+    cout << "Select your payment method (1-3):\n";
+    cout << "[1] - GCash\n";
+    cout << "[2] - Credit Card\n";
+    cout << "[3] - Cash\n";
+    cout << "Enter your choice (1-3): ";
+    cin >> paymentMethod;
+
+    // Display selected choice and total cost in History Check/Ticket Information
+    cout << "\nBooking confirmed!\n";
+    cout << "Number of tickets: " << numberOfTickets << "\n\n";
+    cout << "Movie: " << selectedMovie << "\n\n";
+    cout << "Seat number: " << selectedSeat << "\n\n";
+    cout << "Total cost: " << totalCost << " pesos\n\n";
+    cout << "Payment method: ";
+    switch (paymentMethod) {
+    case 1:
+        cout << "GCash\n";
+        break;
+    case 2:
+        cout << "Credit Card\n";
+        break;
+    case 3:
+        cout << "Cash\n";
+        break;
+    default:
+        cout << "Invalid payment method\n";
+    }
+}
 
 int main() {
     int choice;
+    bool registered = false;
+    string registeredUsername, registeredPassword;
 
     do {
-        clearConsole();
-        if (!isLoggedIn) {
-            displayMainMenu();
-            cin >> choice;
+        cout << "************************************************************************\n";
+        cout << "\t\t\tCEAS MOVIE TICKETING BOOTH\n";
+        cout << "************************************************************************\n\n";
+        cout << "[1] - Register\n";
+        cout << "[2] - Login\n";
+        cout << "[3] - Exit\n";
+        cout << "Enter your choice (1-3): ";
+        cin >> choice;
 
-            switch (choice) {
-            case 1: registerUser(); break;
-            case 2: loginUser(); break;
-            case 3: cout << "Exiting program...\n"; return 0;
-            default: cout << "Invalid choice. Please try again.\n";
-            }
+        switch (choice) {
+        case 1:
+        {
+            string username, password;
+            cout << "New Username: ";
+            cin >> username;
+            cout << "New Password: ";
+            cin >> password;
+            // Implement registration logic here
+            cout << "Registration successful!\n";
+            registered = true;
+            registeredUsername = username;
+            registeredPassword = password;
         }
-        else {
-            displayUserMenu();
-            cin >> choice;
+        break;
 
-            switch (choice) {
-            case 1: selectMovie(); break;
-            case 2: selectSeat(); break;
-            case 3: selectPaymentMethod(); break;
-            case 4: viewHistory(); break;
-            case 5: logout(); break;
-            case 6: cout << "Exiting program...\n"; return 0;
-            default: cout << "Invalid choice. Please try again.\n";
+        case 2:
+            if (!registered) {
+                cout << "Please register first!\n";
+                break;
             }
+
+            {
+                string username, password;
+                bool loginSuccess = false;
+
+                do {
+                    cout << "Username: ";
+                    cin >> username;
+                    cout << "Password: ";
+                    cin >> password;
+
+                    // Check if the entered credentials match the registered ones
+                    if (username == registeredUsername && password == registeredPassword) {
+                        cout << "Log-in successful!\n";
+                        loginSuccess = true;
+
+                        // After successful log-in, show the menu
+                        int loggedInChoice;
+                        do {
+                            cout << "************************************************************************\n";
+                            cout << "\t\t\t       USER MENU\n";
+                            cout << "************************************************************************\n";
+                            cout << "[1] - Movie Selection\n";
+                            cout << "[2] - Seat Selection\n";
+                            cout << "[3] - Book Ticket\n";
+                            cout << "[4] - View History\n";
+                            cout << "[5] - Logout\n";
+                            cout << "[6] - Exit\n";
+                            cout << "Enter your choice (1-6): ";
+                            cin >> loggedInChoice;
+
+                            switch (loggedInChoice) {
+                            case 1:
+                                selectMovie();
+                                break;
+
+                            case 2:
+                                selectSeat();
+                                break;
+
+                            case 3:
+                                bookTicket();
+                                break;
+
+                            case 4:
+                                // Display ticket information, including the selected movie, seat, and total cost
+                                if (!selectedMovie.empty() && selectedSeat != -1) {
+                                    cout << "************************************************************************\n";
+                                    cout << "\t\t\t     HISTORY SAVING\n";
+                                    cout << "************************************************************************\n";
+                                    cout << "Ticket Information:\n";
+                                    cout << "Movie: " << selectedMovie << "\n";
+                                    cout << "Seat number: " << selectedSeat << "\n";
+                                    cout << "Number of tickets: " << numberOfTickets << "\n";
+                                    cout << "Total cost: " << totalCost << " pesos\n";
+                                    // Add more ticket information as needed
+                                }
+                                else {
+                                    cout << "No ticket information available. Please select a movie and seat first.\n";
+                                }
+                                break;
+
+                            case 5:
+                                // Logout
+                                cout << "Log-out successful!\n";
+                                break;
+
+                            case 6:
+                                // Exit the program
+                                cout << "Exiting program...\n";
+                                return 0;  // Terminate the program
+                                break;
+
+                            default:
+                                cout << "Invalid choice. Please try again.\n";
+                            }
+                        } while (loggedInChoice != 5 && loggedInChoice != 6); // Continue the loop until the user chooses to logout or exit
+                    }
+                    else {
+                        cout << "Incorrect username or password. Try again or enter '0' to go back to the main menu.\n";
+                        int backToMainMenu;
+                        cout << "Enter 0 to go back to the main menu: ";
+                        cin >> backToMainMenu;
+                        if (backToMainMenu == 0) {
+                            break;
+                        }
+                    }
+                } while (!loginSuccess); // Continue the loop until login is successful or user goes back to the main menu
+            }
+            break;
+
+        case 3:
+            cout << "Exiting program...\n";
+            return 0;  // Terminate the program
+            break;
+
+        default:
+            cout << "Invalid choice. Please try again.\n";
         }
-    } while (true);
+
+    } while (choice != 3); // Continue the loop until the user chooses to exit
 
     return 0;
-}
-
-// Implement other functions as defined earlier in the previous response
-// ...
-
-// Clear Console
-void clearConsole() {
-    system("cls");
-}
-
-// Display Main Menu
-void displayMainMenu() {
-    cout << "************************************************************************\n";
-    cout << "\t\t\tCEAS MOVIE TICKETING BOOTH\n";
-    cout << "************************************************************************\n";
-    cout << "Main Menu\n\n";
-    cout << "[1] - Register\n";
-    cout << "[2] - Log-in\n";
-    cout << "[3] - Exit\n";
-    cout << "\nChoose your option (1-3): ";
-}
-
-// Display User Menu
-void displayUserMenu() {
-    cout << "************************************************************************\n";
-    cout << "\t\t\t\tUSER MENU\n";
-    cout << "************************************************************************\n";
-    cout << "[1] - Movie Selection\n";
-    cout << "[2] - Seat Selection\n";
-    cout << "[3] - Payment Method\n";
-    cout << "[4] - View History\n";
-    cout << "[5] - Log-out\n";
-    cout << "[6] - Exit\n";
-    cout << "\nChoose your option (1-6): ";
-}
-
-// Register User
-void registerUser() {
-    clearConsole();
-    cout << "************************************************************************\n";
-    cout << "\t\t\t\tREGISTRATION\n";
-    cout << "************************************************************************\n";
-    cout << "Enter new username: ";
-    cin >> currentUser.username;
-    cout << "Enter new password: ";
-    cin >> currentUser.password;
-    cout << "Registration successful.\n";
-    cin.ignore();
-    system("pause");
-}
-
-// Login User
-void loginUser() {
-    clearConsole();
-    string username, password;
-    cout << "************************************************************************\n";
-    cout << "\t\t\t\tLOG-IN\n";
-    cout << "************************************************************************\n";
-    cout << "Enter username: ";
-    cin >> username;
-    cout << "Enter password: ";
-    cin >> password;
-    if (username == currentUser.username && password == currentUser.password) {
-        cout << "Login successful.\n";
-        isLoggedIn = true;
-    }
-    else {
-        cout << "Invalid username or password.\n";
-    }
-    cin.ignore();
-    system("pause");
-}
-
-// Select Movie
-void selectMovie() {
-    clearConsole();
-    cout << "************************************************************************\n";
-    cout << "\t\t\t\tLIST OF MOVIES\n";
-    cout << "************************************************************************\n";
-    cout << "[1] - Movie 1 - Php100\n";
-    cout << "[2] - Movie 2 - Php200\n";
-    cout << "[3] - Movie 3 - Php300\n";
-    cout << "[4] - Movie 4 - Php400\n";
-    cout << "[5] - Movie 5 - Php500\n";
-    cout << "\nSelect a movie (1-5): ";
-    int selectedMovie;
-    cin >> selectedMovie;
-
-    switch (selectedMovie) {
-    case 1: selectedMovieName = "Movie 1 - Php100"; break;
-    case 2: selectedMovieName = "Movie 2 - Php200"; break;
-    case 3: selectedMovieName = "Movie 3 - Php300"; break;
-    case 4: selectedMovieName = "Movie 4 - Php400"; break;
-    case 5: selectedMovieName = "Movie 5 - Php500"; break;
-    default: selectedMovieName = "Invalid selection"; break;
-    }
-
-    if (selectedMovieName != "Invalid selection") {
-        cout << selectedMovieName << " selected.\n";
-    }
-    else {
-        cout << "You've entered the wrong data.";
-    }
-
-    cin.ignore();
-    system("pause");
-}
-
-// Select Seat
-void selectSeat() {
-    clearConsole();
-    cout << "************************************************************************\n";
-    cout << "\t\t\tSEAT SELECTION\n";
-    cout << "************************************************************************\n";
-    cout << "Seat Layout:\n\n"; 
-    cout << "       1       2       3       4       5       6       \n\n"; 
-    cout << "       7       8       9       10      11      12      \n";
-    cout << "\nSelect a seat (1-12): ";
-    int selectedSeat;
-    cin >> selectedSeat;
-
-    switch (selectedSeat) {
-    case 1: selectedSeatName = "Seat 1"; break;
-    case 2: selectedSeatName = "Seat 2"; break;
-    case 3: selectedSeatName = "Seat 3"; break;
-    case 4: selectedSeatName = "Seat 4"; break;
-    case 5: selectedSeatName = "Seat 5"; break;
-    case 6: selectedSeatName = "Seat 6"; break;
-    case 7: selectedSeatName = "Seat 7"; break;
-    case 8: selectedSeatName = "Seat 8"; break;
-    case 9: selectedSeatName = "Seat 9"; break;
-    case 10: selectedSeatName = "Seat 10"; break;
-    case 11: selectedSeatName = "Seat 11"; break;
-    case 12: selectedSeatName = "Seat 12"; break;
-    default: selectedSeatName = "Invalid seat selection"; break;
-    }
-
-    if (selectedSeatName != "Invalid seat selection") {
-        cout << selectedSeatName << " is selected.\n";
-    }
-    else {
-        cout << "Invalid seat selection.\n";
-    }
-
-    cin.ignore();
-    system("pause");
-}
-
-// Select Payment Method
-void selectPaymentMethod() {
-    clearConsole();
-    cout << "************************************************************************\n";
-    cout << "\t\t\tPAYMENT METHOD\n";
-    cout << "************************************************************************\n";
-    cout << "[1] Cash\n";
-    cout << "[2] G-Cash\n";
-    cout << "[3] Credit Card\n";
-    cout << "\nSelect a method (1-3): ";
-    int paymentMethod;
-    cin >> paymentMethod;
-
-    switch (paymentMethod) {
-    case 1: paymentMethodName = "Cash"; break;
-    case 2: paymentMethodName = "G-Cash"; break;
-    case 3: paymentMethodName = "Credit Card"; break;
-    default: paymentMethodName = "Invalid method"; break;
-    }
-
-    if (paymentMethodName != "Invalid method") {
-        cout << paymentMethodName << " selected.\n";
-    }
-    else {
-        cout << "Invalid payment method selected.\n";
-    }
-
-    cin.ignore();
-    system("pause");
-}
-
-// View History
-void viewHistory() {
-    clearConsole();
-    cout << "************************************************************************\n";
-    cout << "\t\t\tHISTORY SAVING\n";
-    cout << "************************************************************************\n";
-    cout << "\nSelected Movie: " << selectedMovieName << "\n";
-    cout << "Selected Seat: " << selectedSeatName << "\n";
-    cout << "Payment Method: " << paymentMethodName << "\n";
-    cin.ignore();
-    system("pause");
-}
-
-// Logout
-void logout() {
-    isLoggedIn = false;
-    resetUserSession();
-    cout << "Logged out successfully.\n";
-    cin.ignore();
-    system("pause");
-}
-
-// Reset User Session
-void resetUserSession() {
-    selectedMovieName = "";
-    selectedSeatName = "";
-    paymentMethodName = "";
 }
