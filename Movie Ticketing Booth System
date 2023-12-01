@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream> //https://github.com/camilamarieceas/Movie-Ticketing-Booth/blob/main/Movie%20Ticketing%20Booth%20System
 #include <string>
 
 using namespace std;
@@ -7,6 +7,7 @@ string selectedMovie;  // Variable to store the user's selected movie
 int selectedSeat;      // Variable to store the user's selected seat
 int numberOfTickets;   // Variable to store the number of tickets booked
 double totalCost;      // Variable to store the total cost of the booking
+string paymentMethod;  // Variable to store the payment method
 
 // Function to handle movie selection
 void selectMovie() {
@@ -63,7 +64,7 @@ void selectSeat() {
     cout << "************************************************************************\n";
     cout << "Seat Layout:\n\n";
     cout << "       1       2       3       4       5       6       \n\n";
-    cout << "       7       8       9       10      11      12      \n";
+    cout << "       7       8       9       10      11      12      \n\n";
     cout << "Select a seat from 1 - 12 (enter 0 to go back to the main menu): ";
     cin >> selectedSeat;
 
@@ -84,7 +85,7 @@ void selectSeat() {
 void bookTicket() {
     cout << "************************************************************************\n";
     cout << "\t\t\t     PAYMENT METHOD\n";
-    cout << "************************************************************************\n"; 
+    cout << "************************************************************************\n";
     cout << "Number of tickets: ";
     cin >> numberOfTickets;
 
@@ -103,36 +104,35 @@ void bookTicket() {
     cout << "Total cost: " << totalCost << " pesos\n";
 
     // Select payment method
-    int paymentMethod;
+    int paymentChoice;
     cout << "Select your payment method (1-3):\n";
     cout << "[1] - GCash\n";
     cout << "[2] - Credit Card\n";
     cout << "[3] - Cash\n";
     cout << "Enter your choice (1-3): ";
-    cin >> paymentMethod;
+    cin >> paymentChoice;
 
-    // Display selected choice and total cost in History Check/Ticket Information
+    switch (paymentChoice) {
+    case 1:
+        paymentMethod = "GCash";;
+        break;
+    case 2:
+        paymentMethod = "Credit Card";
+        break;
+    case 3:
+        paymentMethod = "Cash";
+        break;
+    default:
+        cout << "Invalid payment method\n";
+    }
+    // Display selected choice and total cost in History Saving
     cout << "\nBooking confirmed!\n";
     cout << "Number of tickets: " << numberOfTickets << "\n\n";
     cout << "Movie: " << selectedMovie << "\n\n";
     cout << "Seat number: " << selectedSeat << "\n\n";
     cout << "Total cost: " << totalCost << " pesos\n\n";
-    cout << "Payment method: ";
-    switch (paymentMethod) {
-    case 1:
-        cout << "GCash\n";
-        break;
-    case 2:
-        cout << "Credit Card\n";
-        break;
-    case 3:
-        cout << "Cash\n";
-        break;
-    default:
-        cout << "Invalid payment method\n";
-    }
+    cout << "Payment method: " << paymentMethod << "\n";
 }
-
 int main() {
     int choice;
     bool registered = false;
@@ -143,7 +143,7 @@ int main() {
         cout << "\t\t\tCEAS MOVIE TICKETING BOOTH\n";
         cout << "************************************************************************\n\n";
         cout << "[1] - Register\n";
-        cout << "[2] - Login\n";
+        cout << "[2] - Log-in\n";
         cout << "[3] - Exit\n";
         cout << "Enter your choice (1-3): ";
         cin >> choice;
@@ -151,12 +151,18 @@ int main() {
         switch (choice) {
         case 1:
         {
+            // Reset history when a new user registers
+            selectedMovie = "";
+            selectedSeat = -1;
+            numberOfTickets = 0;
+            totalCost = 0.0;
+            paymentMethod = "";
+
             string username, password;
             cout << "New Username: ";
             cin >> username;
             cout << "New Password: ";
             cin >> password;
-            // Implement registration logic here
             cout << "Registration successful!\n";
             registered = true;
             registeredUsername = username;
@@ -180,12 +186,10 @@ int main() {
                     cout << "Password: ";
                     cin >> password;
 
-                    // Check if the entered credentials match the registered ones
                     if (username == registeredUsername && password == registeredPassword) {
                         cout << "Log-in successful!\n";
                         loginSuccess = true;
 
-                        // After successful log-in, show the menu
                         int loggedInChoice;
                         do {
                             cout << "************************************************************************\n";
@@ -214,7 +218,6 @@ int main() {
                                 break;
 
                             case 4:
-                                // Display ticket information, including the selected movie, seat, and total cost
                                 if (!selectedMovie.empty() && selectedSeat != -1) {
                                     cout << "************************************************************************\n";
                                     cout << "\t\t\t     HISTORY SAVING\n";
@@ -224,7 +227,7 @@ int main() {
                                     cout << "Seat number: " << selectedSeat << "\n";
                                     cout << "Number of tickets: " << numberOfTickets << "\n";
                                     cout << "Total cost: " << totalCost << " pesos\n";
-                                    // Add more ticket information as needed
+                                    cout << "Payment method: " << paymentMethod << "\n";
                                 }
                                 else {
                                     cout << "No ticket information available. Please select a movie and seat first.\n";
@@ -232,12 +235,10 @@ int main() {
                                 break;
 
                             case 5:
-                                // Logout
                                 cout << "Log-out successful!\n";
                                 break;
 
                             case 6:
-                                // Exit the program
                                 cout << "Exiting program...\n";
                                 return 0;  // Terminate the program
                                 break;
@@ -245,7 +246,7 @@ int main() {
                             default:
                                 cout << "Invalid choice. Please try again.\n";
                             }
-                        } while (loggedInChoice != 5 && loggedInChoice != 6); // Continue the loop until the user chooses to logout or exit
+                        } while (loggedInChoice != 5 && loggedInChoice != 6);
                     }
                     else {
                         cout << "Incorrect username or password. Try again or enter '0' to go back to the main menu.\n";
@@ -256,7 +257,7 @@ int main() {
                             break;
                         }
                     }
-                } while (!loginSuccess); // Continue the loop until login is successful or user goes back to the main menu
+                } while (!loginSuccess);
             }
             break;
 
@@ -269,7 +270,7 @@ int main() {
             cout << "Invalid choice. Please try again.\n";
         }
 
-    } while (choice != 3); // Continue the loop until the user chooses to exit
+    } while (choice != 3);
 
     return 0;
 }
